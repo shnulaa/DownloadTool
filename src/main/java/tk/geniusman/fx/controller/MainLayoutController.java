@@ -1,13 +1,7 @@
-package shnulaa.fx.controller;
+package tk.geniusman.fx.controller;
 
 import java.io.File;
 
-import cn.shnulaa.listener.ChangedListener;
-import cn.shnulaa.listener.FinishedListener;
-import cn.shnulaa.listener.ProcessChangedListener;
-import cn.shnulaa.main.ForkJoinDownload;
-import cn.shnulaa.manager.Manager;
-import cn.shnulaa.manager.UIManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -19,6 +13,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
+import tk.geniusman.listener.ChangedListener;
+import tk.geniusman.listener.FinishedListener;
+import tk.geniusman.listener.ProcessChangedListener;
+import tk.geniusman.main.ForkJoinDownload;
+import tk.geniusman.manager.Manager;
+import tk.geniusman.manager.UIManager;
 
 /**
  * MainLayoutController

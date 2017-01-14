@@ -1,4 +1,4 @@
-package cn.shnulaa.manager;
+package tk.geniusman.manager;
 
 import javafx.application.Platform;
 import javafx.scene.control.Label;

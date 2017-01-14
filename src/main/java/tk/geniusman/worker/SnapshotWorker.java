@@ -1,12 +1,12 @@
-package cn.shnulaa.worker;
+package tk.geniusman.worker;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-import cn.shnulaa.bar.ProgressBar;
-import cn.shnulaa.manager.Manager;
+import tk.geniusman.bar.ProgressBar;
+import tk.geniusman.manager.Manager;
 
 /**
  * SnapshotWorker

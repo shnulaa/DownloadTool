@@ -1,4 +1,4 @@
-package cn.shnulaa.manager;
+package tk.geniusman.manager;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 
-import cn.shnulaa.listener.ChangedListener;
-import cn.shnulaa.listener.FinishedListener;
-import cn.shnulaa.listener.ProcessChangedListener;
-import cn.shnulaa.worker.DownloadWorker;
+import tk.geniusman.listener.ChangedListener;
+import tk.geniusman.listener.FinishedListener;
+import tk.geniusman.listener.ProcessChangedListener;
+import tk.geniusman.worker.DownloadWorker;
 
 /**
  * Singleton instance.

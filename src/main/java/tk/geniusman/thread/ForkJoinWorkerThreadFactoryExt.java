@@ -1,4 +1,4 @@
-package cn.shnulaa.thread;
+package tk.geniusman.thread;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;

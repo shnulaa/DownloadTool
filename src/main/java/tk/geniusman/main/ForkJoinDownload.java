@@ -1,4 +1,4 @@
-package cn.shnulaa.main;
+package tk.geniusman.main;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,11 +11,11 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import cn.shnulaa.bar.ProgressBar;
-import cn.shnulaa.manager.Manager;
-import cn.shnulaa.thread.ForkJoinWorkerThreadFactoryExt;
-import cn.shnulaa.worker.DownloadWorker;
-import cn.shnulaa.worker.SnapshotWorker;
+import tk.geniusman.bar.ProgressBar;
+import tk.geniusman.manager.Manager;
+import tk.geniusman.thread.ForkJoinWorkerThreadFactoryExt;
+import tk.geniusman.worker.DownloadWorker;
+import tk.geniusman.worker.SnapshotWorker;
 
 /**
  * "https://github.com/hashem78/android_hardware_qcom_gps/archive/msm8x94.zip");

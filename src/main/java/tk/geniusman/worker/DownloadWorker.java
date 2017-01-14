@@ -1,4 +1,4 @@
-package cn.shnulaa.worker;
+package tk.geniusman.worker;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 
-import cn.shnulaa.manager.Manager;
+import tk.geniusman.manager.Manager;
 
 /**
  * DownloadWorker extends RecursiveAction <br>

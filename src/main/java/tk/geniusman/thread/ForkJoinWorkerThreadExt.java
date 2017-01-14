@@ -1,9 +1,9 @@
-package cn.shnulaa.thread;
+package tk.geniusman.thread;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinWorkerThread;
 
-import cn.shnulaa.manager.Manager;
+import tk.geniusman.manager.Manager;
 
 /**
  * ForkJoinWorkerThreadExt
