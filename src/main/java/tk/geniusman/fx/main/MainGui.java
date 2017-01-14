@@ -1,4 +1,4 @@
-package shnulaa.fx.main;
+package tk.geniusman.fx.main;
 
 import java.awt.AWTException;
 import java.awt.PopupMenu;

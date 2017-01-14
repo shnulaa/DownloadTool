@@ -1,4 +1,4 @@
-package cn.shnulaa.bar;
+package tk.geniusman.bar;
 
 public class ProgressBar {
 	public static String showBarByPoint(double currentPoint, double finishPoint, int barLength, long perSecond,

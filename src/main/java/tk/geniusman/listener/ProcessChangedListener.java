@@ -1,4 +1,4 @@
-package cn.shnulaa.listener;
+package tk.geniusman.listener;
 
 public interface ProcessChangedListener {
 
