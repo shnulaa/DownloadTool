@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 
 import cn.shnulaa.listener.ChangedListener;
+import cn.shnulaa.listener.FinishedListener;
 import cn.shnulaa.listener.ProcessChangedListener;
 import cn.shnulaa.worker.DownloadWorker;
 
@@ -45,6 +46,9 @@ public class Manager implements Serializable {
 
 	/** the listener of the process changed **/
 	private transient ProcessChangedListener plistener;
+
+	/** the listener of the process changed **/
+	private transient FinishedListener flistener;
 
 	/** the flag represents pause all the download thread **/
 	private transient volatile AtomicBoolean pause = new AtomicBoolean(false);
@@ -157,6 +161,14 @@ public class Manager implements Serializable {
 	public void addListener(ChangedListener listener) {
 		this.setListener(listener);
 	}
+	
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void addFinishListener(FinishedListener listener) {
+		this.setFlistener(listener);
+	}
 
 	/**
 	 * 
@@ -179,5 +191,13 @@ public class Manager implements Serializable {
 		alreadyRead.set(0);
 		preAlreadyRead.set(0);
 		size = 0;
+	}
+
+	public FinishedListener getFlistener() {
+		return flistener;
+	}
+
+	public void setFlistener(FinishedListener flistener) {
+		this.flistener = flistener;
 	}
 }

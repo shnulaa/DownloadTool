@@ -8,10 +8,10 @@
 	<description>FxDownloadTool</description>
 
 	<dependencies>
-		<!-- <dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
+		 <!-- <dependency>
+			<groupId>gli</groupId>
+			<artifactId>basicKnowledgeService</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency> -->
 
 		<!-- <dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 

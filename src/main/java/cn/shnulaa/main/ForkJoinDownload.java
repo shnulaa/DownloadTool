@@ -88,9 +88,9 @@ public final class ForkJoinDownload {
 				final long size = ((HttpURLConnection) connection).getContentLength();
 				System.out.println("remote file content size:" + size);
 
-				if (size <= 0) {
+				if (code != 200 || size <= 0) {
 					System.err.println("remote file size is negative, skip download...");
-					return;
+					throw new RuntimeException("remote file size is negative, skip download...");
 				}
 
 				String fullPath = savedPath + fileName;
@@ -106,6 +106,7 @@ public final class ForkJoinDownload {
 				ForkJoinPool pool = null;
 				try {
 					s = Executors.newSingleThreadScheduledExecutor();
+
 					pool = new ForkJoinPool(threadNumber, new ForkJoinWorkerThreadFactoryExt(), null, false);
 
 					recovery(sFile);
@@ -121,11 +122,9 @@ public final class ForkJoinDownload {
 					if (s != null) {
 						s.shutdown();
 					}
-
 					if (sFile.exists()) {
 						sFile.delete();
 					}
-					// s.awaitTermination(30, TimeUnit.HOURS);
 				}
 
 				System.out.print(ProgressBar.showBarByPoint(100, 100, 70, m.getPerSecondSpeed(), true));
@@ -133,9 +132,13 @@ public final class ForkJoinDownload {
 				long end = System.currentTimeMillis();
 				System.out.println("cost time: " + (end - start) / 1000 + "s");
 				m.getPlistener().change(1, 0, Thread.currentThread());
+				m.getFlistener().finish(false, "Download Complete Successfully..");
 			} else {
 				System.err.println("The destination url http connection is not support.");
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			m.getFlistener().finish(false, "Download Complete With Exception..");
 		} finally {
 			if (connection instanceof HttpURLConnection) {
 				if (connection != null)

@@ -3,6 +3,7 @@ package shnulaa.fx.controller;
 import java.io.File;
 
 import cn.shnulaa.listener.ChangedListener;
+import cn.shnulaa.listener.FinishedListener;
 import cn.shnulaa.listener.ProcessChangedListener;
 import cn.shnulaa.main.ForkJoinDownload;
 import cn.shnulaa.manager.Manager;
@@ -69,7 +70,7 @@ public class MainLayoutController {
 	@FXML
 	private void initialize() {
 		address.setText("http://down.360safe.com/cse/360cse_8.5.0.126.exe");
-		localAddress.setText("e:\\");
+		localAddress.setText("d:\\tools\\");
 		pauseOrResume.setDisable(true);
 
 		this.array = new Rectangle[WIDTH][HEIGHT];
@@ -103,6 +104,19 @@ public class MainLayoutController {
 				});
 			}
 		});
+
+		m.addFinishListener(new FinishedListener() {
+			@Override
+			public void finish(boolean hasError, String message) {
+				Platform.runLater(() -> {
+					download.setDisable(false);
+					pauseOrResume.setText("Pause");
+					pauseOrResume.setDisable(true);
+					showAlert("File Download Tools", message,
+							hasError ? Alert.AlertType.ERROR : Alert.AlertType.INFORMATION);
+				});
+			}
+		});
 	}
 
 	/**
@@ -112,7 +126,7 @@ public class MainLayoutController {
 	private void handleDownload() {
 		String addressTxt = address.getText();
 		if (addressTxt == null || addressTxt.isEmpty()) {
-			showAlert("Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
+			showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
 			return;
 		}
 
@@ -134,6 +148,7 @@ public class MainLayoutController {
 			}
 		}).start();
 
+		download.setDisable(true);
 		pauseOrResume.setDisable(false);
 	}
 
@@ -157,12 +172,11 @@ public class MainLayoutController {
 	private void handlePauseOrResume() {
 		if (m.isPause()) {
 			m.resume();
-			pauseOrResume.setText("暂停");
+			pauseOrResume.setText("Pause");
 		} else {
 			m.setPause(true);
-			pauseOrResume.setText("继续");
+			pauseOrResume.setText("Continue");
 		}
-
 	}
 
 	/**

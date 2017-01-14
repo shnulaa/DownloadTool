@@ -70,8 +70,8 @@ public class UIManager {
 				return;
 			}
 			synchronized (r) {
-				if (r.getFill() != Color.RED) {
-					array[x][y].setFill(Color.RED);
+				if (r.getFill() != Color.BLUE) {
+					array[x][y].setFill(Color.BLUE);
 				}
 			}
 		});

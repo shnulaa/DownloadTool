@@ -127,19 +127,21 @@ public class DownloadWorker extends RecursiveAction {
 					}
 					break;
 				} catch (Exception e) {
-					System.err.println("exception occurred while download..");
-					e.printStackTrace();
+					// System.err.println("exception occurred while
+					// download..");
+					// e.printStackTrace();
 					Thread.sleep(1000);
 					continue; // write exception or read timeout, retry
 				}
 			} catch (Exception ex) {
-				System.err.println("exception occurred while download..");
-				ex.printStackTrace();
+				// System.err.println("exception occurred while download..");
+				// ex.printStackTrace();
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					System.err.println("InterruptedException occurred while download..");
-					e.printStackTrace();
+					// System.err.println("InterruptedException occurred while
+					// download..");
+					// e.printStackTrace();
 				}
 				continue;
 			} finally {
