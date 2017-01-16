@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * RectangleManager
+ * UIManager
  * 
  * @author liuyq
  *
@@ -23,7 +23,7 @@ public class UIManager {
 	private Label percentLab;
 
 	/**
-	 * RectangleManager
+	 * UIManager
 	 * 
 	 * @param array
 	 */

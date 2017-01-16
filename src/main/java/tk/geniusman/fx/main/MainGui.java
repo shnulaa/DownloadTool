@@ -13,17 +13,31 @@ import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import tk.geniusman.manager.Manager;
 
+/**
+ * MainGui
+ * 
+ * @author liuyq
+ *
+ */
 public class MainGui extends Application {
 
 	private Stage primaryStage;
 	private Scene rootScene;
 	private TrayIcon trayIcon;
+
+	private volatile double xOffset = 0;
+	private volatile double yOffset = 0;
 
 	/**
 	 * the main entrance of program
@@ -36,17 +50,21 @@ public class MainGui extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		primaryStage.initStyle(StageStyle.UNDECORATED);
 		Platform.setImplicitExit(false);
+
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("Java Fx Download Tools");
+		this.primaryStage.setTitle("Java Download Tools");
+
 		setUserAgentStylesheet(STYLESHEET_MODENA);
 		System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
 		PlatformImpl.setAccessibilityTheme("High Contrast #2");
 
 		try {
-			// Load the root layout from the fxml file
+			// Load the root layout from the FXML file
 			FXMLLoader mainLayoutLoader = new FXMLLoader(MainGui.class.getResource("/ui/MainLayout2.fxml"));
 			Pane rootLayout = mainLayoutLoader.load();
+			setDragable(rootLayout);
 
 			rootScene = new Scene(rootLayout);
 			primaryStage.setScene(rootScene);
@@ -56,10 +74,47 @@ public class MainGui extends Application {
 
 			primaryStage.getIcons().add(new Image(MainGui.class.getResource("/image/icon1.png").toString()));
 			primaryStage.show();
-		} catch (IOException e) {
 
+		} catch (IOException e) {
 			e.printStackTrace();
 			// log.error("IOException occurred when load MainLayout.fxml..", e);
+		}
+	}
+
+	/**
+	 * set the root layout dragable
+	 * 
+	 * @param n
+	 *            the instance of Node
+	 */
+	private void setDragable(Node n) {
+		n.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				xOffset = primaryStage.getX() - event.getScreenX();
+				yOffset = primaryStage.getY() - event.getScreenY();
+			}
+		});
+
+		n.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				primaryStage.setX(event.getScreenX() + xOffset);
+				primaryStage.setY(event.getScreenY() + yOffset);
+			}
+		});
+	}
+
+	/**
+	 * set the root layout dragable
+	 * 
+	 * @param the
+	 *            instance of Pane
+	 */
+	private void setDragable(Pane p) {
+		setDragable((Node) p);
+		for (Node n : p.getChildren()) {
+			setDragable(n);
 		}
 	}
 
@@ -107,11 +162,7 @@ public class MainGui extends Application {
 			exitItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// controller.stop();
-					// controller.stopListen();
-					// Executor.getInstance().stopInternal();
-					Platform.exit();
-					tray.remove(trayIcon);
+					Manager.getInstance().terminate();
 				}
 			});
 
@@ -146,6 +197,6 @@ public class MainGui extends Application {
 	}
 
 	public void showNotification(String message) {
-		trayIcon.displayMessage("Download fx Demo", message, java.awt.TrayIcon.MessageType.INFO);
+		trayIcon.displayMessage("File Download Tools", message, java.awt.TrayIcon.MessageType.INFO);
 	}
 }

@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 
+import javafx.application.Platform;
 import tk.geniusman.listener.ChangedListener;
 import tk.geniusman.listener.FinishedListener;
 import tk.geniusman.listener.ProcessChangedListener;
@@ -26,6 +27,7 @@ public class Manager implements Serializable {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 3879351808960296777L;
+
 	/** key(start-end) value(task info), keep all worker to this map **/
 	private final Map<String, DownloadWorker> map;
 
@@ -55,6 +57,9 @@ public class Manager implements Serializable {
 
 	/** the collections of all the download thread **/
 	public transient Set<Thread> threads;
+
+	/** the flag represents shutdown all the download thread **/
+	public transient volatile boolean terminate = false;
 
 	private Manager() {
 		this.map = new ConcurrentHashMap<>();
@@ -161,7 +166,7 @@ public class Manager implements Serializable {
 	public void addListener(ChangedListener listener) {
 		this.setListener(listener);
 	}
-	
+
 	/**
 	 * 
 	 * @param listener
@@ -200,4 +205,27 @@ public class Manager implements Serializable {
 	public void setFlistener(FinishedListener flistener) {
 		this.flistener = flistener;
 	}
+
+	/**
+	 * terminate the thread pool
+	 */
+	public void terminate() {
+		this.terminate = true;
+		this.pause.set(false);
+
+		for (final Thread t : this.threads) {
+			if (t != null) {
+				LockSupport.unpark(t);
+				t.interrupt();
+			}
+		}
+
+		final java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
+		for (java.awt.TrayIcon icon : tray.getTrayIcons()) {
+			tray.remove(icon);
+		}
+		Platform.exit();
+
+	}
+
 }

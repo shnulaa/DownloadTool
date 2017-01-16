@@ -14,27 +14,35 @@
       <tabs>
         <Tab text="Task List">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <AnchorPane id="Content" fx:id="taskListPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <effect>
+                <Bloom />
+              </effect>
+            </AnchorPane>
           </content>
         </Tab>
         <Tab text="Download">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Label fx:id="addressLab" layoutX="15.0" layoutY="12.0" text="URL" />
+                <TextField fx:id="address" layoutX="70.0" layoutY="9.0" prefHeight="25.0" prefWidth="340.0" />
+                <Label id="localAddressLab" layoutX="15.0" layoutY="41.0" text="Path" />
+                <Button fx:id="open" layoutX="332.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleOpen" text="Open" />
+                <TextField fx:id="localAddress" layoutX="70.0" layoutY="37.0" prefHeight="25.0" prefWidth="244.0" />
+                <Pane fx:id="processPane" layoutX="16.0" layoutY="72.0" prefHeight="199.0" prefWidth="416.0" />
+                <Button fx:id="download" layoutX="28.0" layoutY="306.0" mnemonicParsing="false" onAction="#handleDownload" text="Run" />
+                <Button fx:id="pauseOrResume" layoutX="114.0" layoutY="305.0" mnemonicParsing="false" onAction="#handlePauseOrResume" text="Pause" />
+                <ProgressBar fx:id="process" layoutX="16.0" layoutY="282.0" prefHeight="18.0" prefWidth="298.0" progress="0.0" />
+                <Label fx:id="speedLab" layoutX="330.0" layoutY="280.0" />
+                <Label fx:id="percentLab" layoutX="405.0" layoutY="280.0" />
+                <Button fx:id="terminate" layoutX="219.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleTerminate" text="Terminate" />
+              </children>
+            </AnchorPane>
           </content>
         </Tab>
       </tabs>
     </TabPane>
-    <Label fx:id="addressLab" layoutX="25.0" layoutY="73.0" text="URL" />
-    <TextField fx:id="address" layoutX="80.0" layoutY="70.0" prefHeight="25.0" prefWidth="340.0" />
-    <Label id="localAddressLab" layoutX="25.0" layoutY="102.0" text="Path" />
-    <Button fx:id="open" layoutX="342.0" layoutY="98.0" mnemonicParsing="false" onAction="#handleOpen" text="Open" />
-    <TextField fx:id="localAddress" layoutX="80.0" layoutY="98.0" prefHeight="25.0" prefWidth="244.0" />
-    <Pane fx:id="processPane" layoutX="26.0" layoutY="133.0" prefHeight="178.0" prefWidth="391.0" />
-    <Button fx:id="download" layoutX="38.0" layoutY="367.0" mnemonicParsing="false" onAction="#handleDownload" text="Run" />
-    <Button fx:id="pauseOrResume" layoutX="127.0" layoutY="366.0" mnemonicParsing="false" onAction="#handlePauseOrResume" text="Pause" />
-    <ProgressBar fx:id="process" layoutX="26.0" layoutY="343.0" prefHeight="18.0" prefWidth="298.0" progress="0.0" />
-    <Label fx:id="speedLab" layoutX="340.0" layoutY="341.0" />
-    <Label fx:id="percentLab" layoutX="430.0" layoutY="341.0" />
   </children>
   <effect>
     <Glow>

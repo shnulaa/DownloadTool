@@ -113,11 +113,18 @@ public class DownloadWorker extends RecursiveAction {
 					final byte[] bytes = new byte[1024];
 
 					int readed = 0;
-					while ((readed = bis.read(bytes)) != -1) {
+					while (!Thread.currentThread().isInterrupted() && !m.terminate
+							&& (readed = bis.read(bytes)) != -1) {
 						// while (m.pauseThread.compareAndSet(false, update))
 
 						while (m.isPause()) {
 							LockSupport.park();
+						}
+
+						// duplicate check due to terminate this thread as soon
+						// as possible
+						if (Thread.currentThread().isInterrupted() || m.terminate) {
+							break;
 						}
 
 						file.write(bytes, 0, readed);

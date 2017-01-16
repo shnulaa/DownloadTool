@@ -1,18 +1,22 @@
 package tk.geniusman.fx.controller;
 
 import java.io.File;
+import java.util.Optional;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.StageStyle;
 import tk.geniusman.listener.ChangedListener;
 import tk.geniusman.listener.FinishedListener;
 import tk.geniusman.listener.ProcessChangedListener;
@@ -27,6 +31,7 @@ import tk.geniusman.manager.UIManager;
  *
  */
 public class MainLayoutController {
+
 	@FXML
 	private TextField address; // download URL address
 
@@ -46,6 +51,9 @@ public class MainLayoutController {
 	private Pane processPane;
 
 	@FXML
+	private Pane root;
+
+	@FXML
 	private ProgressBar process;
 
 	@FXML
@@ -53,6 +61,12 @@ public class MainLayoutController {
 
 	@FXML
 	private Label percentLab;
+
+	@FXML
+	private Button terminate;
+
+	@FXML
+	private AnchorPane taskListPane;
 
 	/** Rectangle object array */
 	private Rectangle[][] array; // save the Rectangle object to array
@@ -179,6 +193,15 @@ public class MainLayoutController {
 		}
 	}
 
+	@FXML
+	private void handleTerminate() {
+		Optional<ButtonType> ret = showAlert("File Download Tools", "Confirm to terminate..",
+				Alert.AlertType.CONFIRMATION);
+		if (ret.get() == ButtonType.OK) {
+			Manager.getInstance().terminate();
+		}
+	}
+
 	/**
 	 * clearColor
 	 */
@@ -190,7 +213,7 @@ public class MainLayoutController {
 			for (int i = 0; i < HEIGHT; i++) {
 				final Rectangle r = array[j][i];
 				if (r != null) {
-					r.setFill(Color.WHITE);
+					r.setFill(Color.CORNSILK);
 				}
 			}
 		}
@@ -203,12 +226,13 @@ public class MainLayoutController {
 	 * @param message
 	 * @param type
 	 */
-	private void showAlert(String title, String message, Alert.AlertType type) {
-		Alert a = new Alert(type);
+	private Optional<ButtonType> showAlert(String title, String message, Alert.AlertType type) {
+		final Alert a = new Alert(type);
+		a.initStyle(StageStyle.UNDECORATED);
 		a.setTitle(title);
 		a.setHeaderText(type.name());
 		a.setResizable(false);
 		a.setContentText(message);
-		a.showAndWait();
+		return a.showAndWait();
 	}
 }

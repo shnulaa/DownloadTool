@@ -1,6 +1,23 @@
 package tk.geniusman.bar;
 
+/**
+ * ProgressBar
+ * 
+ * @author liuyq
+ *
+ */
 public class ProgressBar {
+
+	/**
+	 * showBarByPoint
+	 * 
+	 * @param currentPoint
+	 * @param finishPoint
+	 * @param barLength
+	 * @param perSecond
+	 * @param withR
+	 * @return
+	 */
 	public static String showBarByPoint(double currentPoint, double finishPoint, int barLength, long perSecond,
 			boolean withR) {
 		double rate = currentPoint / finishPoint;
@@ -9,6 +26,13 @@ public class ProgressBar {
 				+ String.format(" %sK/S", perSecond) + (withR ? "\r" : "\n");
 	}
 
+	/**
+	 * makeBarBySignAndLength
+	 * 
+	 * @param barSign
+	 * @param barLength
+	 * @return
+	 */
 	private static String makeBarBySignAndLength(int barSign, int barLength) {
 		StringBuilder bar = new StringBuilder();
 		bar.append("[");
@@ -26,7 +50,6 @@ public class ProgressBar {
 	}
 
 	public static void main(String[] args) {
-
 		for (int i = 0; i <= 100; i++) {
 			System.out.println(showBarByPoint(i, 100, 10, i, true));
 		}
