@@ -20,13 +20,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class MainGui extends Application {
-	// private static Logger log = LoggerFactory.getLogger(MainGui.class);
 
 	private Stage primaryStage;
 	private Scene rootScene;
 	private TrayIcon trayIcon;
-	// private MainLayoutController controller;
 
+	/**
+	 * the main entrance of program
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -37,14 +40,12 @@ public class MainGui extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Java Fx Download Tools");
 		setUserAgentStylesheet(STYLESHEET_MODENA);
-		// System.setProperty("com.sun.javafx.highContrastTheme",
-		// "YELLOWONBLACK");
-
+		System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
 		PlatformImpl.setAccessibilityTheme("High Contrast #2");
 
 		try {
 			// Load the root layout from the fxml file
-			FXMLLoader mainLayoutLoader = new FXMLLoader(MainGui.class.getResource("/ui/MainLayout.fxml"));
+			FXMLLoader mainLayoutLoader = new FXMLLoader(MainGui.class.getResource("/ui/MainLayout2.fxml"));
 			Pane rootLayout = mainLayoutLoader.load();
 
 			rootScene = new Scene(rootLayout);
@@ -52,8 +53,6 @@ public class MainGui extends Application {
 			primaryStage.setResizable(false);
 
 			addToTray();
-
-			// this.controller = mainLayoutLoader.getController();
 
 			primaryStage.getIcons().add(new Image(MainGui.class.getResource("/image/icon1.png").toString()));
 			primaryStage.show();
