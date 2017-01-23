@@ -30,6 +30,7 @@ import tk.geniusman.manager.UIManager;
  * @author liuyq
  *
  */
+// @SuppressWarnings("restriction")
 public class MainLayoutController {
 
 	@FXML
@@ -88,20 +89,8 @@ public class MainLayoutController {
 		pauseOrResume.setDisable(true);
 
 		this.array = new Rectangle[WIDTH][HEIGHT];
-		for (int j = 0; j < WIDTH; j++) {
-			for (int i = 0; i < HEIGHT; i++) {
-				final Rectangle r = new Rectangle();
-				r.setX(i * 4);
-				r.setY(j * 2);
-				r.setWidth(4);
-				r.setHeight(2);
-				r.setFill(Color.CORNSILK);
-				array[j][i] = r;
-				processPane.getChildren().add(r);
-			}
-		}
-
-		UIManager uiManager = UIManager.newInstance(array, process, speedLab, percentLab);
+		UIManager uiManager = UIManager.newInstance(array, process, speedLab, percentLab, processPane);
+		uiManager.init();
 
 		m.addListener(new ChangedListener() {
 			@Override

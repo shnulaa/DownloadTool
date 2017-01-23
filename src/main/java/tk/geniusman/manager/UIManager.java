@@ -3,6 +3,7 @@ package tk.geniusman.manager;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -12,6 +13,7 @@ import javafx.scene.shape.Rectangle;
  * @author liuyq
  *
  */
+// @SuppressWarnings("restriction")
 public class UIManager {
 
 	private static final int WIDTH = 100;
@@ -21,6 +23,7 @@ public class UIManager {
 	private ProgressBar process;
 	private Label speedLab;
 	private Label percentLab;
+	private Pane processPane;
 
 	/**
 	 * UIManager
@@ -28,11 +31,12 @@ public class UIManager {
 	 * @param array
 	 */
 	private UIManager(final Rectangle[][] array, final ProgressBar process, final Label speedLab,
-			final Label percentLab) {
+			final Label percentLab, Pane processPane) {
 		this.array = array;
 		this.process = process;
 		this.speedLab = speedLab;
 		this.percentLab = percentLab;
+		this.processPane = processPane;
 	}
 
 	/**
@@ -45,6 +49,31 @@ public class UIManager {
 		process.progressProperty().set(rate);
 		percentLab.setText((int) (rate * 100) + "%");
 		speedLab.setText(String.valueOf(speed) + "KB/S");
+	}
+
+	/**
+	 * init the array to processPane
+	 * 
+	 * @param array
+	 * @param processPane
+	 */
+	public void init() {
+		for (int j = 0; j < WIDTH; j++) {
+			for (int i = 0; i < HEIGHT; i++) {
+				final Rectangle r = new Rectangle();
+				r.setX(i * 4);
+				r.setY(j * 2);
+				r.setWidth(4);
+				r.setHeight(2);
+				r.setFill(Color.CORNSILK);
+				array[j][i] = r;
+				processPane.getChildren().add(r);
+			}
+		}
+	}
+
+	public void recovery() {
+
 	}
 
 	/**
@@ -62,6 +91,9 @@ public class UIManager {
 			if (x >= 100 || y >= 100) {
 				return;
 			}
+
+			// System.out.println(String.format("PIXELS:%s, total:%s..", PIXELS,
+			// total));
 
 			// System.out.println(String.format("percent:%s, x:%s, y:%s",
 			// percent, x, y));
@@ -84,8 +116,8 @@ public class UIManager {
 	 * @return new instance of RectangleManager
 	 */
 	public static UIManager newInstance(final Rectangle[][] array, final ProgressBar process, final Label speedLab,
-			final Label percentLab) {
-		return new UIManager(array, process, speedLab, percentLab);
+			final Label percentLab, final Pane processPane) {
+		return new UIManager(array, process, speedLab, percentLab, processPane);
 	}
 
 }

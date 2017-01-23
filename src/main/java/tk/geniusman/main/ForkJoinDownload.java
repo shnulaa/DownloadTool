@@ -3,6 +3,7 @@ package tk.geniusman.main;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -107,7 +108,17 @@ public final class ForkJoinDownload {
 				try {
 					s = Executors.newSingleThreadScheduledExecutor();
 
-					pool = new ForkJoinPool(threadNumber, new ForkJoinWorkerThreadFactoryExt(), null, false);
+					// using fork join thread pool to download the destination
+					pool = new ForkJoinPool(threadNumber, new ForkJoinWorkerThreadFactoryExt(),
+							new UncaughtExceptionHandler() {
+								@Override
+								public void uncaughtException(Thread t, Throwable e) {
+									final String errorMessage = "Unknown Exception occurred "
+											+ "while using fock join thread pool, err: "
+											+ e.getMessage();
+									System.err.println(errorMessage);
+								}
+							}, false);
 
 					recovery(sFile);
 					m.setSize(size);
