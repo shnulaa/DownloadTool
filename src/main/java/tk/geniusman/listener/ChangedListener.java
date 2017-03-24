@@ -2,6 +2,6 @@ package tk.geniusman.listener;
 
 public interface ChangedListener {
 
-	void change(long current, Thread t);
+    void change(long current, long totalSize, Thread t);
 
 }

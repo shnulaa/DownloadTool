@@ -1,6 +1,8 @@
 package tk.geniusman.fx.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import javafx.application.Platform;
@@ -27,7 +29,6 @@ import tk.geniusman.manager.UIManager;
  * @author liuyq
  *
  */
-// @SuppressWarnings("restriction")
 public class MainLayoutController {
 
     @FXML
@@ -74,7 +75,7 @@ public class MainLayoutController {
     private final Manager m = Manager.getInstance();
 
     /**
-     * constructor
+     * MainLayoutController constructor
      */
     public MainLayoutController() {
     }
@@ -90,7 +91,7 @@ public class MainLayoutController {
         uiManager.init();
 
         // add change Color listener
-        m.addListener((current, t) -> Platform.runLater(() -> uiManager.changeColor(current, m.getSize())));
+        m.addListener((current, fileSize, t) -> Platform.runLater(() -> uiManager.changeColor(current, fileSize)));
 
         // add change Percent listener
         m.addProcessListener((rate, speed, t) -> Platform.runLater(() -> uiManager.changePercent(rate, speed)));
@@ -125,7 +126,8 @@ public class MainLayoutController {
         }
 
         clearColor();
-        final String[] args = { addressTxt, "15", localAddressTxt, null };
+        final String[] args = { addressTxt, "15", localAddressTxt,
+                "download_" + new SimpleDateFormat("yyyyMMddmmss").format(new Date()) };
         new Thread(() -> {
             try {
                 ForkJoinDownload.main(args);
