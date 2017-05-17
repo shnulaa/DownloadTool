@@ -94,6 +94,7 @@ public class DownloadWorker extends RecursiveAction {
      */
     private void execute() {
         int retryCount = 0;
+        final Thread t = Thread.currentThread();
         while (retryCount++ < THREAD_MAX_RETRY_COUNT) {
             HttpURLConnection con = null;
             HttpURLConnection.setFollowRedirects(true);
@@ -115,9 +116,7 @@ public class DownloadWorker extends RecursiveAction {
                     final byte[] bytes = new byte[1024];
 
                     int readed = 0;
-                    while (!Thread.currentThread().isInterrupted() && !m.terminate
-                            && (readed = bis.read(bytes)) != -1) {
-                        // while (m.pauseThread.compareAndSet(false, update))
+                    while (!t.isInterrupted() && !m.terminate && (readed = bis.read(bytes)) != -1) {
 
                         while (m.isPause()) {
                             LockSupport.park();
@@ -125,13 +124,13 @@ public class DownloadWorker extends RecursiveAction {
 
                         // duplicate check due to terminate this thread as soon
                         // as possible
-                        if (Thread.currentThread().isInterrupted() || m.terminate) {
+                        if (t.isInterrupted() || m.terminate) {
                             break;
                         }
 
                         file.write(bytes, 0, readed);
                         current.getAndAdd(readed);
-                        m.getListener().change(current.get(), fileSize, Thread.currentThread());
+                        m.getListener().change(current.get(), fileSize, t);
                         m.alreadyRead.getAndAdd(readed);
                     }
                     break;
