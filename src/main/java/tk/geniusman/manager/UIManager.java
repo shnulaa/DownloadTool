@@ -125,15 +125,4 @@ public class UIManager {
         return new UIManager(array, process, speedLab, percentLab, processPane);
     }
 
-    // /**
-    // * newInstance
-    // *
-    // * @param that
-    // * @return
-    // */
-    // public static UIManager newInstance(final MainLayoutController that) {
-    //
-    // // return newInstance(that.);
-    // }
-
 }

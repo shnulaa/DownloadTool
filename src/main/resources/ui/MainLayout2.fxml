@@ -26,7 +26,7 @@
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
                 <Label fx:id="addressLab" layoutX="15.0" layoutY="12.0" text="URL" />
-                <TextField fx:id="address" layoutX="70.0" layoutY="9.0" prefHeight="25.0" prefWidth="340.0" />
+                <TextField fx:id="address" layoutX="70.0" layoutY="9.0" prefHeight="25.0" prefWidth="310.0" />
                 <Label id="localAddressLab" layoutX="15.0" layoutY="41.0" text="Path" />
                 <Button fx:id="open" layoutX="332.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleOpen" text="Open" />
                 <TextField fx:id="localAddress" layoutX="70.0" layoutY="37.0" prefHeight="25.0" prefWidth="244.0" />
