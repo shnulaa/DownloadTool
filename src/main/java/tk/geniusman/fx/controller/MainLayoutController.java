@@ -91,7 +91,7 @@ public class MainLayoutController {
         uiManager.init();
 
         // add change Color listener
-        m.addListener((current, fileSize, t) -> Platform.runLater(() -> uiManager.changeColor(current, fileSize)));
+        m.addListener((current, fileSize, t) -> Platform.runLater(() -> uiManager.changeColor(current, fileSize, t)));
 
         // add change Percent listener
         m.addProcessListener((rate, speed, t) -> Platform.runLater(() -> uiManager.changePercent(rate, speed)));
@@ -189,7 +189,7 @@ public class MainLayoutController {
             for (int i = 0; i < HEIGHT; i++) {
                 final Rectangle r = array[j][i];
                 if (r != null) {
-                    r.setFill(Color.CORNSILK);
+                    r.setFill(Color.AZURE);
                 }
             }
         }

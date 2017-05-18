@@ -1,6 +1,11 @@
 package tk.geniusman.manager;
 
-import javafx.application.Platform;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Pane;
@@ -13,9 +18,9 @@ import javafx.scene.shape.Rectangle;
  * @author liuyq
  *
  */
-// @SuppressWarnings("restriction")
 public class UIManager {
 
+    private static final Map<String, Color> THREAD_COLOR = new ConcurrentHashMap<>();
     private static final int WIDTH = 100;
     private static final int HEIGHT = 100;
     private static final int PIXELS = WIDTH * HEIGHT;
@@ -65,15 +70,24 @@ public class UIManager {
                 r.setY(j * 2);
                 r.setWidth(4);
                 r.setHeight(2);
-                r.setFill(Color.CORNSILK);
+                r.setFill(Color.AZURE);
                 array[j][i] = r;
                 processPane.getChildren().add(r);
             }
         }
-    }
 
-    public void recovery() {
-
+        final Field[] fields = Color.class.getDeclaredFields();
+        final AtomicInteger index = new AtomicInteger(1);
+        Arrays.asList(fields).parallelStream().filter((f) -> f.getType().isAssignableFrom(Color.class)).forEach((f) -> {
+            try {
+                f.setAccessible(true);
+                THREAD_COLOR.put("ForkJoinThread-" + index.getAndIncrement(), (Color) f.get(null));
+            } catch (Exception e) {
+                // e.printStackTrace();
+            } finally {
+                f.setAccessible(false);
+            }
+        });
     }
 
     /**
@@ -82,36 +96,40 @@ public class UIManager {
      * @param current
      * @param totol
      */
-    public void changeColor(final long current, final long total) {
-        Platform.runLater(() -> {
+    public void changeColor(final long current, final long total, final Thread t) {
+        if (total <= 0) {
+            System.out.println("total is negative..");
+            return;
+        }
 
-            System.out.println("current:" + current);
-            if (total <= 0) {
-                System.out.println("total is negative..");
-                return;
+        int percent = (int) (current * PIXELS / total);
+
+        int x = (int) percent / WIDTH;
+        int y = (int) percent % HEIGHT;
+        if (x >= 100 || x >= 100) {
+            return;
+        }
+
+        setColor(current, x, y, t);
+    }
+
+    /**
+     * set background color
+     * 
+     * @param x
+     * @param y
+     */
+    private void setColor(final long current, int x, int y, Thread t) {
+        final Rectangle r = array[x][y];
+        if (r == null) {
+            return;
+        }
+        synchronized (r) {
+            final Color color = THREAD_COLOR.containsKey(t.getName()) ? THREAD_COLOR.get(t.getName()) : Color.BLUE;
+            if (r.getFill() != color) {
+                array[x][y].setFill(color);
             }
-
-            int percent = (int) (current * PIXELS / total);
-
-            int x = (int) percent / WIDTH;
-            int y = (int) percent % HEIGHT;
-            if (x >= 100 || y >= 100) {
-                return;
-            }
-
-            System.out.println(String.format("PIXELS:%s, total:%s..", PIXELS, total));
-
-            System.out.println(String.format("percent:%s, x:%s, y:%s", percent, x, y));
-            final Rectangle r = array[x][y];
-            if (r == null) {
-                return;
-            }
-            synchronized (r) {
-                if (r.getFill() != Color.BLUE) {
-                    array[x][y].setFill(Color.BLUE);
-                }
-            }
-        });
+        }
     }
 
     /**
@@ -123,6 +141,48 @@ public class UIManager {
     public static UIManager newInstance(final Rectangle[][] array, final ProgressBar process, final Label speedLab,
             final Label percentLab, final Pane processPane) {
         return new UIManager(array, process, speedLab, percentLab, processPane);
+    }
+
+    /**
+     * 
+     * @param args
+     */
+    public static void main(String[] args) {
+        final Field[] fields = Color.class.getDeclaredFields();
+        final AtomicInteger index = new AtomicInteger(1);
+        Arrays.asList(fields).parallelStream().filter((f) -> f.getType().isAssignableFrom(Color.class)).forEach((f) -> {
+            try {
+                f.setAccessible(true);
+                THREAD_COLOR.put("ForkJoinThread-" + index.getAndIncrement(), (Color) f.get(null));
+            } catch (Exception e) {
+                // e.printStackTrace();
+            } finally {
+                f.setAccessible(false);
+            }
+        });
+
+        THREAD_COLOR.forEach((name, color) -> {
+            System.out.println("name:" + name + ", color:" + color.toString());
+        });
+
+        // System.out.println(String.format("PIXELS:%s, total:%s..", PIXELS,
+        // total));
+        // System.out.println(String.format("percent:%s, x:%s, y:%s", percent,
+        // x, y));
+
+        //
+        // if (total < PIXELS) {
+        // for (int j = 0; j < (percent / x); j++) { // row
+        // for (int i = 0; i < x; i++) { // height
+        // if (j >= 100 || i >= 100) {
+        // continue;
+        // }
+        // setColor(current, j, i, t);
+        // }
+        // }
+        // return;
+        // }
+
     }
 
 }
