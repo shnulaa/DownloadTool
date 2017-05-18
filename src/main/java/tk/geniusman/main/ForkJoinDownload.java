@@ -118,7 +118,7 @@ public final class ForkJoinDownload {
                     recovery(sFile);
                     m.setSize(size);
                     pool.submit(new DownloadWorker(0, size, size, url, new File(fullPath)));
-                    s.scheduleAtFixedRate(new SnapshotWorker(sFile, size), 0, 1, TimeUnit.SECONDS);
+                    s.scheduleAtFixedRate(new SnapshotWorker(sFile, size), 0, 5, TimeUnit.SECONDS);
                 } finally {
                     if (pool != null) {
                         pool.shutdown();
