@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import tk.geniusman.bar.ProgressBar;
 import tk.geniusman.manager.Manager;
 import tk.geniusman.thread.ForkJoinWorkerThreadFactoryExt;
-import tk.geniusman.worker.DownloadWorker;
+import tk.geniusman.worker.ForkJoinDownloadWorker;
 import tk.geniusman.worker.SnapshotWorker;
 
 /**
@@ -105,8 +105,11 @@ public final class ForkJoinDownload {
                 long start = System.currentTimeMillis();
                 ScheduledExecutorService s = null;
                 ForkJoinPool pool = null;
+                // ExecutorService pool2 = null;
+
                 try {
                     s = Executors.newSingleThreadScheduledExecutor();
+                    // pool2 = Executors.newCachedThreadPool();
 
                     // using fork join thread pool to download the destination
                     pool = new ForkJoinPool(threadNumber, new ForkJoinWorkerThreadFactoryExt(), (t, e) -> {
@@ -117,7 +120,9 @@ public final class ForkJoinDownload {
 
                     recovery(sFile);
                     m.setSize(size);
-                    pool.submit(new DownloadWorker(0, size, size, url, new File(fullPath)));
+                    pool.submit(new ForkJoinDownloadWorker(0, size, size, url, new File(fullPath)));
+
+                    // pool.su
                     s.scheduleAtFixedRate(new SnapshotWorker(sFile, size), 0, 5, TimeUnit.SECONDS);
                 } finally {
                     if (pool != null) {

@@ -15,7 +15,7 @@ import javafx.application.Platform;
 import tk.geniusman.listener.ChangedListener;
 import tk.geniusman.listener.FinishedListener;
 import tk.geniusman.listener.ProcessChangedListener;
-import tk.geniusman.worker.DownloadWorker;
+import tk.geniusman.worker.ForkJoinDownloadWorker;
 
 /**
  * Singleton instance.
@@ -30,7 +30,7 @@ public class Manager implements Serializable {
     private static final long serialVersionUID = 3879351808960296777L;
 
     /** key(start-end) value(task info), keep all worker to this map **/
-    private final Map<String, DownloadWorker> map;
+    private final Map<String, ForkJoinDownloadWorker> map;
 
     /** the size that already download **/
     public final AtomicLong alreadyRead = new AtomicLong(0);
@@ -67,25 +67,25 @@ public class Manager implements Serializable {
         this.threads = new CopyOnWriteArraySet<>();
     }
 
-    public Map<String, DownloadWorker> getMap() {
+    public Map<String, ForkJoinDownloadWorker> getMap() {
         return this.map;
     }
 
-    public DownloadWorker get(String key) {
+    public ForkJoinDownloadWorker get(String key) {
         return map.get(key);
     }
 
-    public Collection<DownloadWorker> getCollections() {
+    public Collection<ForkJoinDownloadWorker> getCollections() {
         return map.values();
     }
 
-    public Manager add(DownloadWorker task) {
+    public Manager add(ForkJoinDownloadWorker task) {
         final String key = task.getKey();
         map.put(key, task); // overwrite
         return this;
     }
 
-    public void remove(DownloadWorker task) {
+    public void remove(ForkJoinDownloadWorker task) {
         final String key = task.getKey();
         this.map.remove(key);
     }

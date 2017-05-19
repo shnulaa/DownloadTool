@@ -20,7 +20,7 @@ import tk.geniusman.manager.Manager;
  * 
  * @author liuyq
  */
-public class DownloadWorker extends RecursiveAction {
+public class ForkJoinDownloadWorker extends RecursiveAction {
 
     /** the default forkJoin thresholds **/
     private static final long THRESHOLDS = (1024 * 1024 * 1); // 1M
@@ -52,7 +52,7 @@ public class DownloadWorker extends RecursiveAction {
      * @param url
      * @param dFile
      */
-    public DownloadWorker(long start, long end, long fileSize, URL url, File dFile) {
+    public ForkJoinDownloadWorker(long start, long end, long fileSize, URL url, File dFile) {
         this.start = start;
         this.current = new AtomicLong(start);
         this.end = end;
@@ -71,7 +71,7 @@ public class DownloadWorker extends RecursiveAction {
     protected void compute() {
         if (end - start <= THRESHOLDS) {
             try {
-                DownloadWorker reTask = null;
+                ForkJoinDownloadWorker reTask = null;
                 current.set((m.recovery && (reTask = m.get(getKey())) != null) ? reTask.getCurrent() : start);
                 m.add(this);
                 execute();
@@ -83,8 +83,8 @@ public class DownloadWorker extends RecursiveAction {
             }
         } else {
             long middle = (start + end) / 2;
-            ForkJoinTask<?> childTask1 = new DownloadWorker(start, middle, fileSize, url, dFile);
-            ForkJoinTask<?> childTask2 = new DownloadWorker(middle + 1, end, fileSize, url, dFile);
+            ForkJoinTask<?> childTask1 = new ForkJoinDownloadWorker(start, middle, fileSize, url, dFile);
+            ForkJoinTask<?> childTask2 = new ForkJoinDownloadWorker(middle + 1, end, fileSize, url, dFile);
             invokeAll(childTask1, childTask2);
         }
     }
