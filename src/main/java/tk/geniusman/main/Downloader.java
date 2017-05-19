@@ -44,12 +44,12 @@ public interface Downloader {
      * @param args
      * @return
      */
-    default boolean checkArgs(final Args args) {
+    default void checkArgs(final Args args) {
         if (args == null || isEmpty(args.getDownloadUrl()) || isNull(args.getThreadNumber())
                 || isEmpty(args.getSavedPath())) {
             System.err.println("argument error..");
             System.err.println("usage: java -jar [XX.jar] [downloadUrl] [threadNumber] [savedPath] [savedName]");
-            return true;
+            throw new RuntimeException("argument error..");
         }
 
         if (isEmpty(args.getSavedPath())) {
@@ -65,10 +65,11 @@ public interface Downloader {
         String fullPath = args.getSavedPath() + args.getFullFileName();
         if (!args.getSavedPath().endsWith(File.separator)) {
             args.setFullPath(args.getSavedPath() + File.separator + args.getFullFileName());
+        } else {
+            args.setFullPath(fullPath);
         }
 
         final String sFilePath = fullPath + ".s";
         args.setFullTmpPath(new File(sFilePath));
-        return false;
     }
 }

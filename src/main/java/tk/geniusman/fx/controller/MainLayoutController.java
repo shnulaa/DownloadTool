@@ -19,7 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
-import tk.geniusman.main.ForkJoinDownload;
+import tk.geniusman.main.Args;
+import tk.geniusman.main.DownloaderFactory;
+import tk.geniusman.main.Type;
 import tk.geniusman.manager.Manager;
 import tk.geniusman.manager.UIManager;
 
@@ -126,11 +128,11 @@ public class MainLayoutController {
         }
 
         clearColor();
-        final String[] args = { addressTxt, "15", localAddressTxt,
-                "download_" + new SimpleDateFormat("yyyyMMddmmss").format(new Date()) };
+
         new Thread(() -> {
             try {
-                ForkJoinDownload.main(args);
+                DownloaderFactory.getInstance(Type.FORK_JOIN).start(new Args(addressTxt, 15, localAddressTxt,
+                        "download_" + new SimpleDateFormat("yyyyMMddmmss").format(new Date())));
                 System.out.println("Clear..");
                 m.clear();
             } catch (Throwable e) {

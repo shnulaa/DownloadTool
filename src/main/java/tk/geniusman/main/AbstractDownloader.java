@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import tk.geniusman.bar.ProgressBar;
 import tk.geniusman.manager.Manager;
 import tk.geniusman.worker.SnapshotWorker;
 
@@ -28,34 +29,49 @@ public abstract class AbstractDownloader implements Downloader {
 
     @Override
     public void start(final Args args) throws Exception {
-        if (!checkArgs(args)) {
-            return;
-        }
-
-        checkRemoteFile(args);
-
-        ScheduledExecutorService s = null;
-        ExecutorService es = null;
+        long start = System.currentTimeMillis();
         try {
-            recovery(args.getFullTmpPath());
-            m.setSize(args.getFileSize());
-            es = startMainTask(args);
-            s = startScheduledTask(args);
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            if (es != null) {
-                es.shutdown();
-            }
-            es.awaitTermination(30, TimeUnit.HOURS);
+            // check the argument
+            checkArgs(args);
 
-            if (s != null) {
-                s.shutdown();
+            // check the remote file is exist
+            checkRemoteFile(args);
+
+            ScheduledExecutorService s = null;
+            ExecutorService es = null;
+            try {
+                recovery(args.getFullTmpPath());
+                m.setSize(args.getFileSize());
+                es = startMainTask(args);
+                s = startScheduledTask(args);
+            } catch (Exception e) {
+                throw e;
+            } finally {
+                if (es != null) {
+                    es.shutdown();
+                }
+                es.awaitTermination(30, TimeUnit.HOURS);
+
+                if (s != null) {
+                    s.shutdown();
+                }
+                if (args.getFullTmpPath().exists()) {
+                    args.getFullTmpPath().delete();
+                }
             }
-            if (args.getFullTmpPath().exists()) {
-                args.getFullTmpPath().delete();
-            }
+            System.out.print(ProgressBar.showBarByPoint(100, 100, 70, m.getPerSecondSpeed(), true));
+            System.out.flush();
+            long end = System.currentTimeMillis();
+            System.out.println("cost time: " + (end - start) / 1000 + "s");
+            m.getPlistener().change(1, 0, Thread.currentThread());
+            m.getFlistener().finish(false, "Download Complete Successfully..");
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.getFlistener().finish(false, "Download Complete With Exception..");
+        } finally {
+
         }
+
     }
 
     @Override
@@ -77,7 +93,7 @@ public abstract class AbstractDownloader implements Downloader {
      */
     private ScheduledExecutorService startScheduledTask(final Args args) {
         ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
-        s.scheduleAtFixedRate(new SnapshotWorker(args.getFullTmpPath(), args.getFileSize()), 0, 5, TimeUnit.SECONDS);
+        s.scheduleAtFixedRate(new SnapshotWorker(args.getFullTmpPath(), args.getFileSize()), 0, 1, TimeUnit.SECONDS);
         return s;
     }
 
@@ -89,6 +105,7 @@ public abstract class AbstractDownloader implements Downloader {
      */
     private long checkRemoteFile(Args args) throws Exception {
         final URL url = new URL(args.getDownloadUrl());
+        args.setUrl(url);
 
         HttpURLConnection.setFollowRedirects(true);
 
