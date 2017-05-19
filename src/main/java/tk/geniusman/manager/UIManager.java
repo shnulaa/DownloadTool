@@ -3,8 +3,11 @@ package tk.geniusman.manager;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -78,12 +81,14 @@ public class UIManager {
 
         final Field[] fields = Color.class.getDeclaredFields();
         final AtomicInteger index = new AtomicInteger(1);
-        Arrays.asList(fields).parallelStream().filter((f) -> f.getType().isAssignableFrom(Color.class)).forEach((f) -> {
+        Supplier<Stream<Field>> supplier = () -> {
+            return Arrays.asList(fields).parallelStream().filter((f) -> f.getType().isAssignableFrom(Color.class));
+        };
+        supplier.get().skip(new Random().nextInt((int) supplier.get().count() - 15)).forEach((f) -> {
             try {
                 f.setAccessible(true);
                 THREAD_COLOR.put("ForkJoinThread-" + index.getAndIncrement(), (Color) f.get(null));
             } catch (Exception e) {
-                // e.printStackTrace();
             } finally {
                 f.setAccessible(false);
             }
