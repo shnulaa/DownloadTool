@@ -17,7 +17,7 @@ public class ForkJoinDownloader extends AbstractDownloader {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected <T extends ExecutorService> T startMainTask(final Args args) {
+    protected <T extends ExecutorService> T startMainTask(final Args args) throws Exception {
         ForkJoinPool pool = new ForkJoinPool(args.getThreadNumber(), new ForkJoinWorkerThreadFactoryExt(), (t, e) -> {
             final String errorMessage = "Unknown Exception occurred " + "while using fock join thread pool, err: "
                     + e.getMessage();

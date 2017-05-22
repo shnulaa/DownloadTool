@@ -15,7 +15,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
@@ -75,6 +74,7 @@ public class MainLayoutController {
     private static final int HEIGHT = 100;
     // private static final int PIXELS = WIDTH * HEIGHT;
     private final Manager m = Manager.getInstance();
+    private UIManager uiManager;
 
     /**
      * MainLayoutController constructor
@@ -89,7 +89,7 @@ public class MainLayoutController {
         pauseOrResume.setDisable(true);
 
         this.array = new Rectangle[WIDTH][HEIGHT];
-        UIManager uiManager = UIManager.newInstance(array, process, speedLab, percentLab, processPane);
+        uiManager = UIManager.newInstance(array, process, speedLab, percentLab, processPane);
         uiManager.init();
 
         // add change Color listener
@@ -127,7 +127,7 @@ public class MainLayoutController {
             return;
         }
 
-        clearColor();
+        uiManager.clearColor();
 
         new Thread(() -> {
             try {
@@ -177,23 +177,6 @@ public class MainLayoutController {
                 Alert.AlertType.CONFIRMATION);
         if (ret.get() == ButtonType.OK) {
             Manager.getInstance().terminate();
-        }
-    }
-
-    /**
-     * clearColor
-     */
-    private void clearColor() {
-        if (array == null) {
-            return;
-        }
-        for (int j = 0; j < WIDTH; j++) {
-            for (int i = 0; i < HEIGHT; i++) {
-                final Rectangle r = array[j][i];
-                if (r != null) {
-                    r.setFill(Color.AZURE);
-                }
-            }
         }
     }
 

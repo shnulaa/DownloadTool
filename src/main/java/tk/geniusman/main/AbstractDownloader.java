@@ -76,6 +76,7 @@ public abstract class AbstractDownloader implements Downloader {
 
     @Override
     public void terminate() {
+        m.terminate();
     }
 
     /**
@@ -83,7 +84,7 @@ public abstract class AbstractDownloader implements Downloader {
      * 
      * @return
      */
-    protected abstract <T extends ExecutorService> T startMainTask(final Args args);
+    protected abstract <T extends ExecutorService> T startMainTask(final Args args) throws Exception;
 
     /**
      * startScheduledTask

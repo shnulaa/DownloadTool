@@ -2,7 +2,7 @@ package tk.geniusman.main;
 
 public enum Type {
 
-    FORK_JOIN(ForkJoinDownloader.class);
+    FORK_JOIN(ForkJoinDownloader.class), DEFAULT(DefaultDownloader.class);
 
     private Class<? extends AbstractDownloader> clazz;
 

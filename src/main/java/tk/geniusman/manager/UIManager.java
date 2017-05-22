@@ -119,6 +119,23 @@ public class UIManager {
     }
 
     /**
+     * clear Color
+     */
+    public void clearColor() {
+        if (array == null) {
+            return;
+        }
+        for (int j = 0; j < WIDTH; j++) {
+            for (int i = 0; i < HEIGHT; i++) {
+                final Rectangle r = array[j][i];
+                if (r != null) {
+                    r.setFill(Color.AZURE);
+                }
+            }
+        }
+    }
+
+    /**
      * set background color
      * 
      * @param x
