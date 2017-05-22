@@ -131,7 +131,7 @@ public class MainLayoutController {
 
         new Thread(() -> {
             try {
-                DownloaderFactory.getInstance(Type.FORK_JOIN).start(new Args(addressTxt, 15, localAddressTxt,
+                DownloaderFactory.getInstance(Type.DEFAULT).start(new Args(addressTxt, 15, localAddressTxt,
                         "download_" + new SimpleDateFormat("yyyyMMddmmss").format(new Date())));
                 System.out.println("Clear..");
                 m.clear();

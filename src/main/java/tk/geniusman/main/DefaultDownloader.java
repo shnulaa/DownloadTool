@@ -3,10 +3,12 @@ package tk.geniusman.main;
 import java.io.File;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import tk.geniusman.thread.DefaultThreadFactoryExt;
+import tk.geniusman.thread.DefaultThreadPoolExecutorExt;
 import tk.geniusman.worker.DefaultDownloadWorker;
 
 /**
@@ -24,8 +26,12 @@ public class DefaultDownloader extends AbstractDownloader {
         final int threadNum = args.getThreadNumber();
         final URL url = args.getUrl();
         final File dFile = new File(args.getFullPath());
-        ExecutorService service = Executors.newFixedThreadPool(threadNum, new DefaultThreadFactoryExt());
 
+        // ExecutorService service = Executors.newFixedThreadPool(threadNum, new
+        // DefaultThreadFactoryExt());
+
+        ExecutorService service = new DefaultThreadPoolExecutorExt(threadNum, threadNum, 0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(), new DefaultThreadFactoryExt());
         final long per = fileSize / threadNum;
         IntStream.rangeClosed(1, threadNum).boxed()
                 .map((v) -> new DefaultDownloadWorker((v - 1) * per + 1, v * per, fileSize, url, dFile))
