@@ -19,10 +19,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
-import tk.geniusman.main.Args;
-import tk.geniusman.main.Downloader;
-import tk.geniusman.main.DownloaderFactory;
-import tk.geniusman.main.Type;
+import tk.geniusman.downloader.Args;
+import tk.geniusman.downloader.Downloader;
+import tk.geniusman.downloader.DownloaderFactory;
+import tk.geniusman.downloader.Type;
 import tk.geniusman.manager.Manager;
 import tk.geniusman.manager.UIManager;
 

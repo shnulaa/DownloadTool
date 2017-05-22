@@ -1,4 +1,4 @@
-package tk.geniusman.main;
+package tk.geniusman.downloader;
 
 import java.io.File;
 import java.io.FileInputStream;

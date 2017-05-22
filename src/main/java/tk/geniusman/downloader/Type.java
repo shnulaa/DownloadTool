@@ -1,4 +1,4 @@
-package tk.geniusman.main;
+package tk.geniusman.downloader;
 
 public enum Type {
 
