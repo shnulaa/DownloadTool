@@ -6,5 +6,5 @@
 
 
 ### snapshot
-![image](http://git.geniusman.tk/liuyq/FxDownloadTool/raw/develop/src/main/resources/image/snapshot.png)
+![image](https://github.com/shnulaa/DownloadTool/blob/master/src/main/resources/image/snapshot.png?raw=true)
 
