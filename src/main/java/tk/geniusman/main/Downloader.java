@@ -8,7 +8,7 @@ import java.io.File;
  * @author liuyq
  *
  */
-public interface Downloader {
+public interface Downloader extends Runnable {
     /** the file destination folder **/
     static final String FOLDER = "./";
     /** ForkJoinPool pool size **/
@@ -40,11 +40,12 @@ public interface Downloader {
     }
 
     /**
+     * checkAndSetArgs
      * 
      * @param args
      * @return
      */
-    default void checkArgs(final Args args) {
+    default void checkAndSetArgs(final Args args) {
         if (args == null || isEmpty(args.getDownloadUrl()) || isNull(args.getThreadNumber())
                 || isEmpty(args.getSavedPath())) {
             System.err.println("argument error..");

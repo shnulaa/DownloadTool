@@ -25,13 +25,31 @@ public abstract class AbstractDownloader implements Downloader {
 
     /** the instance of Manager **/
     private static final Manager m = Manager.getInstance();
+    private final Args args;
+
+    /**
+     * 
+     * @param args
+     */
+    public AbstractDownloader(final Args args) {
+        this.args = args;
+    }
+
+    @Override
+    public void run() {
+        try {
+            start(this.args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void start(final Args args) throws Exception {
         long start = System.currentTimeMillis();
         try {
             // check the argument
-            checkArgs(args);
+            checkAndSetArgs(args);
 
             // check the remote file is exist
             checkRemoteFile(args);
@@ -60,7 +78,7 @@ public abstract class AbstractDownloader implements Downloader {
             }
             // System.out.print(ProgressBar.showBarByPoint(100, 100, 70,
             // m.getPerSecondSpeed(), true));
-            System.out.flush();
+            // System.out.flush();
             long end = System.currentTimeMillis();
             System.out.println("cost time: " + (end - start) / 1000 + "s");
             m.getPlistener().change(1, 0, Thread.currentThread());
@@ -68,10 +86,7 @@ public abstract class AbstractDownloader implements Downloader {
         } catch (Exception e) {
             e.printStackTrace();
             m.getFlistener().finish(false, "Download Complete With Exception..");
-        } finally {
-
         }
-
     }
 
     @Override
@@ -112,7 +127,6 @@ public abstract class AbstractDownloader implements Downloader {
 
         URLConnection connection = null;
         try {
-
             connection = url.openConnection();
             connection.setRequestProperty("Accept-Encoding", "identity");
             if (connection instanceof HttpURLConnection) {

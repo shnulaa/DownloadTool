@@ -4,17 +4,17 @@ public enum Type {
 
     FORK_JOIN(ForkJoinDownloader.class), DEFAULT(DefaultDownloader.class);
 
-    private Class<? extends AbstractDownloader> clazz;
+    private Class<? extends Downloader> clazz;
 
-    private Type(Class<? extends AbstractDownloader> clazz) {
+    private Type(Class<? extends Downloader> clazz) {
         this.setClazz(clazz);
     }
 
-    public Class<? extends AbstractDownloader> getClazz() {
+    public Class<? extends Downloader> getClazz() {
         return clazz;
     }
 
-    public void setClazz(Class<? extends AbstractDownloader> clazz) {
+    public void setClazz(Class<? extends Downloader> clazz) {
         this.clazz = clazz;
     }
 

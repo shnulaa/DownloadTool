@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
 import tk.geniusman.main.Args;
+import tk.geniusman.main.Downloader;
 import tk.geniusman.main.DownloaderFactory;
 import tk.geniusman.main.Type;
 import tk.geniusman.manager.Manager;
@@ -114,7 +116,7 @@ public class MainLayoutController {
      * the action for handle the button of Download
      */
     @FXML
-    private void handleDownload() {
+    private void handleDownload() throws Exception {
         String addressTxt = address.getText();
         if (addressTxt == null || addressTxt.isEmpty()) {
             showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
@@ -129,16 +131,22 @@ public class MainLayoutController {
 
         uiManager.clearColor();
 
-        new Thread(() -> {
-            try {
-                DownloaderFactory.getInstance(Type.DEFAULT).start(new Args(addressTxt, 15, localAddressTxt,
-                        "download_" + new SimpleDateFormat("yyyyMMddmmss").format(new Date())));
-                System.out.println("Clear..");
-                m.clear();
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }).start();
+        Downloader downloader = DownloaderFactory.getInstance(Type.DEFAULT, new Args(addressTxt, 15, localAddressTxt,
+                "download_" + new SimpleDateFormat("yyyyMMddmmss").format(new Date())));
+        Executors.newSingleThreadExecutor().submit(downloader);
+
+        // new Thread(() -> {
+        // try {
+        // DownloaderFactory.getInstance(Type.DEFAULT).start(new
+        // Args(addressTxt, 15, localAddressTxt,
+        // "download_" + new SimpleDateFormat("yyyyMMddmmss").format(new
+        // Date())));
+        // System.out.println("Clear..");
+        // m.clear();
+        // } catch (Throwable e) {
+        // e.printStackTrace();
+        // }
+        // }).start();
 
         download.setDisable(true);
         pauseOrResume.setDisable(false);

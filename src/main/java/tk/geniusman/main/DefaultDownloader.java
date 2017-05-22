@@ -19,6 +19,15 @@ import tk.geniusman.worker.DefaultDownloadWorker;
  */
 public class DefaultDownloader extends AbstractDownloader {
 
+    /**
+     * DefaultDownloader
+     * 
+     * @param args
+     */
+    public DefaultDownloader(Args args) {
+        super(args);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected <T extends ExecutorService> T startMainTask(Args args) throws Exception {

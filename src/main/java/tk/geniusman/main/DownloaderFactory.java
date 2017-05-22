@@ -1,5 +1,7 @@
 package tk.geniusman.main;
 
+import java.lang.reflect.Constructor;
+
 /**
  * DownloaderFactory
  * 
@@ -14,7 +16,9 @@ public class DownloaderFactory {
      * @param type
      * @return the instance of Downloader
      */
-    public static Downloader getInstance(Type type) throws Exception {
-        return type.getClazz().newInstance();
+    public static Downloader getInstance(Type type, Args args) throws Exception {
+        Class<? extends Downloader> clazz = type.getClazz();
+        Constructor<? extends Downloader> c = clazz.getDeclaredConstructor(Args.class);
+        return c.newInstance(args);
     }
 }

@@ -15,6 +15,10 @@ import tk.geniusman.worker.ForkJoinDownloadWorker;
  */
 public class ForkJoinDownloader extends AbstractDownloader {
 
+    public ForkJoinDownloader(Args args) {
+        super(args);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected <T extends ExecutorService> T startMainTask(final Args args) throws Exception {
