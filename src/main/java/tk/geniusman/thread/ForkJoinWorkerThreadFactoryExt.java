@@ -8,25 +8,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * ForkJoinWorkerThreadFactoryExt
  * 
- * @author shnulaa
+ * @author liuyq
  *
  */
 public class ForkJoinWorkerThreadFactoryExt implements ForkJoinWorkerThreadFactory {
 
-	/**
-	 * ForkJoinWorkerThreadFactoryExt
-	 */
-	public ForkJoinWorkerThreadFactoryExt() {
-	}
+    /**
+     * ForkJoinWorkerThreadFactoryExt
+     */
+    public ForkJoinWorkerThreadFactoryExt() {
+    }
 
-	private final AtomicInteger index = new AtomicInteger();
+    private final AtomicInteger index = new AtomicInteger();
 
-	@Override
-	public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
-		ForkJoinWorkerThread thread = new ForkJoinWorkerThreadExt(pool);
-		thread.setName("ForkJoinThread-" + index.incrementAndGet());
-		thread.setDaemon(true);
-		return thread;
-	}
+    @Override
+    public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
+        ForkJoinWorkerThread thread = new ForkJoinWorkerThreadExt(pool);
+        thread.setName("ForkJoinThread-" + index.incrementAndGet());
+        thread.setDaemon(true);
+        return thread;
+    }
 
 }

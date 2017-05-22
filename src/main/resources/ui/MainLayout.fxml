@@ -2,6 +2,7 @@
 
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.*?>
@@ -33,4 +34,11 @@
     <Button fx:id="download" layoutX="30.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleDownload" text="Run" />
     <Button fx:id="pauseOrResume" layoutX="89.0" layoutY="343.0" mnemonicParsing="false" onAction="#handlePauseOrResume" text="Pause" />
   </children>
+  <effect>
+    <Glow>
+      <input>
+        <ColorAdjust />
+      </input>
+    </Glow>
+  </effect>
 </Pane>
