@@ -11,7 +11,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import tk.geniusman.bar.ProgressBar;
 import tk.geniusman.manager.Manager;
 import tk.geniusman.thread.ForkJoinWorkerThreadFactoryExt;
 import tk.geniusman.worker.ForkJoinDownloadWorker;
@@ -138,7 +137,8 @@ public final class ForkJoinDownload {
                     }
                 }
 
-                System.out.print(ProgressBar.showBarByPoint(100, 100, 70, m.getPerSecondSpeed(), true));
+                // System.out.print(ProgressBar.showBarByPoint(100, 100, 70,
+                // m.getPerSecondSpeed(), true));
                 System.out.flush();
                 long end = System.currentTimeMillis();
                 System.out.println("cost time: " + (end - start) / 1000 + "s");
